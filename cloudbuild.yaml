@@ -13,7 +13,7 @@ steps:
       - 'deploy'
       - 'dockerfile'
       - '--image'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/tejas-100925231/dockerfile:$COMMIT_SHA'
+      - 'us-central1-docker.pkg.dev/erudite-wind-274600/kaizaan-100930806/dockerfile:$COMMIT_SHA'
       - '--region'
       - 'us-central1'
       - '--platform'
