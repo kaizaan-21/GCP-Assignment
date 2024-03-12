@@ -1,7 +1,25 @@
 steps:
+  # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/erudite-wind-274600/kaizaan-100930806:$COMMIT_SHA', '.']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/erudite-wind-274600/kaizaan-100930806/dockerfile:$COMMIT_SHA', '.']
+  # Step 2: Push the Docker image to the Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/erudite-wind-274600/kaizaan-100930806:$COMMIT_SHA']
+    args: ['push', 'us-central1-docker.pkg.dev/erudite-wind-274600/kaizaan-100930806/dockerfile:$COMMIT_SHA']
+    # Step 3: Deploy the Docker image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'dockerfile'
+      - '--image'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/tejas-100925231/dockerfile:$COMMIT_SHA'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+images:
+  - 'us-central1-docker.pkg.dev/erudite-wind-274600/kaizaan-100930806/dockerfile:$COMMIT_SHA'
 options:
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+    defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
